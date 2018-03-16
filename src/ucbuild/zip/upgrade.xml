@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin-upgrade
+        xmlns="http://www.urbancode.com/UpgradeXMLSchema_v1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+<!--    <migrate to-version="3">
+    <migrate-command name="Send Email to Team">
+      <remove-properties>
+        <remove-property name="processName"/>
+      </remove-properties>
+    </migrate-command>
+  </migrate>-->
+</plugin-upgrade>

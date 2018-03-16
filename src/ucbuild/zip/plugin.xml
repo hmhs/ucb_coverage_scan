@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin xmlns="http://www.urbancode.com/PluginXMLSchema_v1"
+        xmlns:server="http://www.urbancode.com/PluginServerXMLSchema_v1"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <header>
+    <identifier id="com.hmhs.underpinning.ucb_coverage_scan" version="@API_VERSION@" name="Code Coverage Scanner"/>
+    <description>Scan the Code Coverage report from a build life</description>
+    <tag>Utilities/Code Coverage Scanning</tag>
+  </header>
+
+  <step-type name="Scan Code Coverage Report">
+    <description>Run a scan on the code coverage report from a build life in UC Build</description>
+    <properties>
+      <property name="projectId" required="true">
+        <property-ui type="textBox"
+                     label="Project ID"
+                     description="Project ID containing the build to scan"/>
+      </property>
+      <property name="processId" required="true">
+        <property-ui type="textAreaBox"
+                     label="Process ID"
+                     description="Email Body"/>
+      </property>
+      <property name="buildLifeId" required="true">
+        <property-ui type="textBox"
+                     label="Build Life ID"
+                     description="Build Life ID containing the code coverage report"/>
+      </property>
+      <property name="scanLevel" required="true">
+        <property-ui type="selectBox"
+                     label="Scan Level"
+                     description="Report (overall) or Group (detail) level"/>
+                <value label="Report">report</value>
+                <value label="Group">group</value>
+      </property>
+      <property name="percentageType" required="true">
+        <property-ui type="selectBox"
+                     label="Percentage Type"
+                     description="Which percentage type should be scanned"/>
+                <value label="Line">line</value>
+                <value label="Method">method</value>
+                <value label="Branch">branch</value>
+      </property>
+      <property name="complexity" required="false">
+        <property-ui type="textBox"
+                     label="Complexity Level"
+                     description="Valid only when scanning by group.  Scanner will only look at values lower or equal to this complexity"/>
+      </property>
+      <property name="percentage" required="true">
+        <property-ui type="textBox"
+                     label="Percentage"
+                     description="Percentage - if percentage is lower than this value, the scanner will fail"/>
+      </property>
+        <property name="webUrl" required="true">
+            <property-ui type="textBox"
+                         label="UC Build URL"
+                         description="UC Build URL To use for REST Calls"/>
+
+        </property>
+        <property name="userName" required="true">
+            <property-ui type="textBox"
+                         label="User Name"
+                         description="UC Build User Name"/>
+
+        </property>
+        <property name="password" required="true">
+            <property-ui type="secureBox"
+                         label="Password"
+                         description="Password of UC Build user to use when connecting"/>
+        </property>
+    </properties>
+    <post-processing>
+      <![CDATA[
+        if (properties.get("exitCode") != 0) {
+            properties.put(new java.lang.String("Status"), new java.lang.String("Failure"));
+        }
+        else {
+            properties.put("Status", "Success");
+        }
+     ]]>
+    </post-processing>
+
+    <command program="${GROOVY_HOME}/bin/groovy">
+      <arg value="-cp"/>
+      <arg path="classes:lib/activation-1.1.jar;lib/groovy-all-2.4.12.jar;lib/groovy-plugin-utils-1.0.jar;lib/gson-2.3.1.jar;lib/mail-1.4.1.jar"/>
+      <arg file="classes/coverageScan.groovy"/>
+      <arg file="${PLUGIN_INPUT_PROPS}"/>
+      <arg file="${PLUGIN_OUTPUT_PROPS}"/>
+    </command>
+  </step-type>
+</plugin>

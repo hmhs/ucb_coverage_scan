@@ -1,0 +1,100 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
+plugins {
+  id "syzygy.lang.jvm" version "2018.02.19.3661"
+}
+
+dependencies {
+  def syzygy_version = '2018.02.19.3661'
+
+  compile 'com.ibm.urbancode.plugins:groovy-plugin-utils:1.0'
+    compile 'com.ibm.urbancode.plugins:uDeployRestClient:1.0'
+  compileOnly 'org.codehaus.groovy:groovy:2.4.12'
+  compileOnly gradleApi()
+  compileOnly localGroovy()
+}
+
+hmhs {
+  rufusHash = "9ad054a2"
+}
+
+test {
+    testLogging.showStandardStreams = true
+}
+
+// When the plug-in is built, a distributable .zip file is created with the name "pluginName-apiVersion.pluginVersion.zip"
+// The following default values generate a .zip file named helloworld-2.dev.zip.
+//
+// The pluginName property is used in the distributable .zip file name as shown previously.
+def pluginName="ucb_coverage_scan"
+
+// The apiVersion property is used to set the @API_VERSION@ variable in the plugin.xml file and is used in
+// combination with the pluginVersion property to set the @RELEASE_VERSION@ variable in the info.xml file (apiVersion.pluginVersion).
+// It is also used in the distributable .zip file name as shown previously.
+def apiVersion="1"
+
+// The pluginVersion property is used to set the specific build of the version, which is used in
+// combination with the apiVersion property to set the @RELEASE_VERSION@ variable in the info.xml file (apiVersion.pluginVersion).
+// It is also used as the pluginVersion property in the distributable .zip file name as shown previously.
+// For local builds, specify dev for the pluginVersion property. For releases, use the first eight characters of the
+// commit ID, ${GIT_COMMIT:0:8}, which is done on Bluemix when a commit is pushed to the GitHub project.
+def pluginVersion="dev"
+
+defaultTasks 'distPlugin'
+
+def buildLocaleDir = 'build/locale'
+
+configurations.all {
+    exclude module: "groovy-all"
+    exclude module: "groovy-xml"
+    resolutionStrategy {
+      force "org.codehaus.groovy:groovy:${GroovySystem.version}"
+      force "org.codehaus.groovy:groovy-all:${GroovySystem.version}"
+    }
+} 
+  
+configurations {
+  ucbuild
+}
+
+sourceSets {
+  ucbuild {
+    groovy {
+      srcDirs = ['src/ucbuild/zip']
+    }
+  }
+}
+
+task copyDeps(type: Copy) {
+  from configurations.runtime
+  into "${buildDir}/copylibs"
+}
+
+task distPlugin(dependsOn: ['copyDeps', 'distPluginUCB'])
+
+tasks.create([name: "distPluginUCB", type: Zip]) {
+  dependsOn = ['compileGroovy']
+
+  def releaseVersion = apiVersion + "." + pluginVersion
+    into('classes') {
+        from(sourceSets.main.groovy.srcDirs) {
+            filter(ReplaceTokens, tokens: [API_VERSION: apiVersion, RELEASE_VERSION: releaseVersion])
+        }
+    }
+  /*from(sourceSets.main.groovy.srcDirs) {
+    filter(ReplaceTokens, tokens: [API_VERSION: apiVersion, RELEASE_VERSION: releaseVersion])
+  }*/
+  from(sourceSets.ucbuild.groovy.srcDirs) {
+    filter(ReplaceTokens, tokens: [API_VERSION: apiVersion, RELEASE_VERSION: releaseVersion])
+  }
+  into('lib') {
+    from copyDeps
+  }
+  into('locale') {
+    from buildLocaleDir
+  }
+  archiveName = "${pluginName}-build-${releaseVersion}.zip"
+}
+
+
+task cleanAll(dependsOn: ['clean', 'cleanCopyDeps', 'cleanDistPlugin'])
