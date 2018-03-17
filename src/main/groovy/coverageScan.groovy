@@ -26,6 +26,8 @@ if(foundFailures.size() > 0) {
     foundFailures.each() { report ->
         println report
     }
+} else {
+    println "Code Coverage matches or exceeds set criteria."
 }
 
 System.exit(foundFailures.size())

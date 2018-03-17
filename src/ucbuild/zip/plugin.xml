@@ -82,7 +82,7 @@
 
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
-      <arg path="classes:lib/activation-1.1.jar;lib/groovy-all-2.4.12.jar;lib/groovy-plugin-utils-1.0.jar;lib/gson-2.3.1.jar;lib/mail-1.4.1.jar"/>
+      <arg path="classes:lib/activation-1.1.jar;lib/groovy-all-2.4.12.jar;lib/groovy-plugin-utils-1.0.jar;lib/gson-2.3.1.jar;lib/mail-1.4.1.jar;lib/uDeployRestClient-1.0.jar"/>
       <arg file="classes/coverageScan.groovy"/>
       <arg file="${PLUGIN_INPUT_PROPS}"/>
       <arg file="${PLUGIN_OUTPUT_PROPS}"/>
