@@ -5,8 +5,6 @@ final airTool = new AirPluginTool(args[0], args[1])
 
 final def props = airTool.getStepProperties()
 
-def exitCode = 0
-
 def projectId = props['projectId'].toString()
 def processId = props['processId'].toString()
 def buildLifeId = props['buildLifeId'].toString()
@@ -22,3 +20,12 @@ CoverageScanner coverageScanner = new CoverageScanner(webUrl, userName, password
 
 List<String> foundFailures = coverageScanner.getCoverageInfo(projectId, processId, buildLifeId,  scanLevel, percentage,
         percentageType, complexity)
+
+if(foundFailures.size() > 0) {
+    println "Code Coverage found which does not meet the criteria specified"
+    foundFailures.each() { report ->
+        println report
+    }
+}
+
+System.exit(foundFailures.size())

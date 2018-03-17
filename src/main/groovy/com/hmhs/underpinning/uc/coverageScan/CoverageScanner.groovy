@@ -70,7 +70,13 @@ class CoverageScanner {
         def returnValue = []
 
         def coverageInfo = performGetRequest(this.ucClient,this.baseUrl + addUrl)
-        if(coverageInfo == null && teamInfo.size() != 0) {
+        if(coverageInfo == null && coverageInfo.size() != 0) {
+            returnValue.add("No Coverage Report Found")
+            return returnValue
+        }
+
+        if(coverageInfo.totalReports == 0) {
+            returnValue.add("No Coverage Report Found")
             return returnValue
         }
 
