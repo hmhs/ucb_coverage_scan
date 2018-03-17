@@ -17,9 +17,9 @@
                      description="Project ID containing the build to scan"/>
       </property>
       <property name="processId" required="true">
-        <property-ui type="textAreaBox"
+        <property-ui type="textBox"
                      label="Process ID"
-                     description="Email Body"/>
+                     description="Process ID containing the build to scany"/>
       </property>
       <property name="buildLifeId" required="true">
         <property-ui type="textBox"
