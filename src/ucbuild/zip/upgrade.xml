@@ -2,7 +2,8 @@
 <plugin-upgrade
         xmlns="http://www.urbancode.com/UpgradeXMLSchema_v1"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-
+<!-- Version update information for UC Build
+     Version 2 added a new property of complexityHighLow -->
   <migrate to-version="2">
     <migrate-command name="Scan Code Coverage Report">
       <migrate-properties>

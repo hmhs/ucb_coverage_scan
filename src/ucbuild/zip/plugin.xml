@@ -87,6 +87,8 @@
      ]]>
     </post-processing>
 
+    <!-- NOTE: the class path is set with all required JAR files.  This is to make it work on Linux and Windows
+               Linux can accept lib/* but Windows will not -->
     <command program="${GROOVY_HOME}/bin/groovy">
       <arg value="-cp"/>
       <arg path="classes:lib/activation-1.1.jar;lib/groovy-all-2.4.12.jar;lib/groovy-plugin-utils-1.0.jar;lib/gson-2.3.1.jar;lib/mail-1.4.1.jar;lib/uDeployRestClient-1.0.jar"/>
