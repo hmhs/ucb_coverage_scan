@@ -28,7 +28,7 @@ class CoverageScannerTest extends Specification {
         given:
         // This will be required to be changed to match the admin user and password in the system
         // The admin:admin are the defaults for UC Build
-        CoverageScanner coverageScanner = new CoverageScanner('https://ucbuildtest.highmark.com',
+        CoverageScanner coverageScanner = new CoverageScanner('https://ucbuild.example.com',
                 'admin', 'admin')
 
         when:
