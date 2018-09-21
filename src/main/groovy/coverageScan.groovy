@@ -15,11 +15,12 @@ def percentage = props['percentage'].toString()
 def webUrl = props['webUrl'].toString()
 def userName = props['userName'].toString()
 def password = props['password'].toString()
+def complexityHighLow = props['complexityHighLow'].toString()
 
 CoverageScanner coverageScanner = new CoverageScanner(webUrl, userName, password)
 
 List<String> foundFailures = coverageScanner.getCoverageInfo(projectId, processId, buildLifeId,  scanLevel, percentage,
-        percentageType, complexity)
+        percentageType, complexity, complexityHighLow)
 
 if(foundFailures.size() > 0) {
     println "Code Coverage found which does not meet the criteria specified"

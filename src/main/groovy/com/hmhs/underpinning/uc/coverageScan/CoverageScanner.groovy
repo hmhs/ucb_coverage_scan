@@ -65,7 +65,7 @@ class CoverageScanner {
     }
 
     List<String> getCoverageInfo(String projectId, String processId, String buildLife, String scanLevel, String percentage,
-                            String percentageType, String complexity) {
+                            String percentageType, String complexity, String complexityHighLow) {
         String addUrl = "/rest2/projects/" + projectId + "/buildProcesses/" + processId + "/buildLives/" + buildLife + "/codeCoverage"
         def returnValue = []
 
@@ -125,7 +125,11 @@ class CoverageScanner {
                             break
                     }
                     foundComplexity = new BigDecimal(group.complexity.toString())
-                    if(foundPercentage < myPercentage && foundComplexity <= myComplexity) {
+                    if(foundPercentage < myPercentage && foundComplexity <= myComplexity && complexityHighLow == "lower") {
+                        returnValue.add(group.name)
+                    }
+
+                    if(foundPercentage < myPercentage && foundComplexity >= myComplexity && complexityHighLow == "higher") {
                         returnValue.add(group.name)
                     }
                 }

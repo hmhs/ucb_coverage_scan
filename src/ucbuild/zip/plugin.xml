@@ -46,6 +46,13 @@
                      label="Complexity Level"
                      description="Valid only when scanning by group.  Scanner will only look at values lower or equal to this complexity"/>
       </property>
+      <property name="complexityHighLow" required="false">
+        <property-ui type="selectBox"
+                     label="Complexity Flag"
+                     description="When complexity is set, should the coverage be analyzed if the complexity is higher or lower than the number specified"/>
+        <value label="Higher">higher</value>
+        <value label="Lower">lower</value>
+      </property>
       <property name="percentage" required="true">
         <property-ui type="textBox"
                      label="Percentage"

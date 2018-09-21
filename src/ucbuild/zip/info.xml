@@ -20,5 +20,9 @@
     <release-note plugin-version="1">
       Initial creation of Code Coverage Scanner plugin
     </release-note>
+
+    <release-note plugin-version="2">
+      Added property to check complexity if it is lower or higher than a specific amount
+    </release-note>
   </release-notes>
 </pluginInfo>
